@@ -8,7 +8,7 @@ if not os.path.exists("html_files"):
 	os.mkdir("html_files")
 unverified_context= ssl._create_unverified_context()
 
-for i in range(1):
+for i in range(7):
 	current_time_stamp = datetime.datetime.fromtimestamp(time.time()).strftime('%d%H')
 	print(str(i) + ": " + current_time_stamp)
 	f= open("html_files/kayak" + current_time_stamp + ".html", "wb")
@@ -17,4 +17,4 @@ for i in range(1):
 	html= response.read()
 	f.write(html)
 	f.close()
-	time.sleep(60)
+	time.sleep(86400)

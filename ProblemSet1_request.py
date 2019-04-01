@@ -3,18 +3,18 @@ import ssl
 import os
 import time
 
-if not os.path.exists("html_files"):
-	os.mkdir("html_files")
+if not os.path.exists("xml_files"):
+	os.mkdir("xml_files")
 unverified_context= ssl._create_unverified_context()
 
 for i in range(1061):
 	print("page " + str(i+1))
-	f= open("html_files/boardgamegeekpage" + str(i+1) + ".html", "wb")
+	f= open("xml_files/boardgamegeekpage" + str(i+1) + ".xml", "wb")
 	response=urllib.request.urlopen('https://boardgamegeek.com/browse/boardgame/page/' + str(i+1))
 	html=response.read()
 	f.write(html)
 	f.close()
-	time.sleep(60)
+	time.sleep(30)
 
 
 

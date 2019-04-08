@@ -23,28 +23,17 @@ for one_file_name in glob.glob("html_files/*.html"):
 		game_geekrating = game_cell[0].text
 		game_avgrating = game_cell[1].text
 		game_votenum= game_cell[2].text
-		i=0
-		for c in game_cell:
-			if i == 0:
-				game_geekrating=c.text
-			elif i == 1:
-				game_avgrating=c.text
-			elif i == 2:
-				game_votenum=c.text
-			i=i+1	
-		print(game_name)
-		print(game_geekrating)
-		print(game_avgrating)
-		print(game_votenum)
-
-
-	df=df.append({
-		'scrapping_time': scrapping_time,
-		'title': game_name,
-		'geek_rating': game_geekrating,
-		'avg_rating': game_avgrating,
-		'vote_number': game_votenum,
-		}, ignore_index=True)
+		# print(game_name)
+		# print(game_geekrating)
+		# print(game_avgrating)
+		# print(game_votenum)
+		df=df.append({
+			'scrapping_time': scrapping_time,
+			'title': game_name,
+			'geek_rating': game_geekrating,
+			'avg_rating': game_avgrating,
+			'vote_number': game_votenum,
+			}, ignore_index=True)
 
 print(df)
 df.to_csv("parsed_results/boardgamegeek_dataset.csv")

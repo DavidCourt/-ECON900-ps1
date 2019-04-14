@@ -9,9 +9,9 @@ if not os.path.exists("parsed_results"):
 df = pd.DataFrame()
 
 for one_file_name in glob.glob("html_files/*.html"):
-	print("parsing " + one_file_name)
-	scrapping_time = os.path.splitext(os.path.basename(one_file_name))[0].replace("boardgamegeek","")
-	print(scrapping_time)
+	# print("parsing " + one_file_name)
+	page_number = os.path.splitext(os.path.basename(one_file_name))[0].replace("boardgamegeekpage","")
+	print(page_number)
 	f= open(one_file_name, "r", encoding="utf-8")
 	soup = BeautifulSoup(f.read(), 'html.parser')
 	f.close()
@@ -23,12 +23,8 @@ for one_file_name in glob.glob("html_files/*.html"):
 		game_geekrating = game_cell[0].text
 		game_avgrating = game_cell[1].text
 		game_votenum= game_cell[2].text
-		# print(game_name)
-		# print(game_geekrating)
-		# print(game_avgrating)
-		# print(game_votenum)
 		df=df.append({
-			'scrapping_time': scrapping_time,
+			'page_number': page_number,
 			'title': game_name,
 			'geek_rating': game_geekrating,
 			'avg_rating': game_avgrating,

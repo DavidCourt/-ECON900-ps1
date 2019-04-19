@@ -1,52 +1,65 @@
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
+import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import KFold
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import cross_val_score
-import numpy as np
+
+from sklearn import linear_model
+from sklearn.neighbors import KNeighborsRegressor
+
 from sklearn import metrics
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
 
 boardgame= pd.read_csv("parsed_results/boardgamegeek_dataset.csv", encoding= "latin-1")
-#print(boardgame.head())
+ols = smf.ols('page_number ~ geek_rating + avg_rating + vote_number', data=boardgame).fit()
+#print(ols.summary())
 
-# #going to be doing classification
-data= boardgame.iloc[:,1:4]
-# print(data.head())
+data= boardgame.iloc[:,2:5]
+#print(data.head())
 target= boardgame.iloc[:,0]
 #print(target.head())
 data= data.values
 target= target.values
 
-# plt.scatter(target, data[:,1])
-# plt.savefig("scatter1.png")
-
-# knn2 = KNeighborsClassifier()
-# param_grid= {'n_neighbors' : np.arange(1,100)}
-# knn_gscv = GridSearchCV(knn2, param_grid, cv=10).fit(data, target)
-# print(knn_gscv.best_params_)
-
-knn = KNeighborsClassifier(n_neighbors=1)
-knn.fit(data, target)
-
-data_training, data_test, target_training, target_test= train_test_split(data, target, test_size=.2, random_state=0, stratify=target)
-kfold_machine= KFold(n_splits=5)
-kfold_machine.get_n_splits(data)
-#print(kfold_machine)
-
-# knn_cv = KNeighborsClassifier(n_neighbors=1)
-# cv_scores = cross_val_score(knn_cv, data, target, cv=5)
-# print(cv_scores)
-# print("cv_scores mean:{}".format(np.mean(cv_scores)))
+plt.scatter(target, data[:,0])
+plt.title("Geek Rating")
+plt.xlabel("Page Number")
+plt.ylabel("Geek Ranking")
+plt.savefig("Geek_Rank.png")
+plt.clf()
+plt.scatter(target, data[:,1])
+plt.title("Average Rating")
+plt.xlabel("Page Number")
+plt.ylabel("Average Rating")
+plt.savefig("Avg_Rating.png")
+plt.clf()
+plt.scatter(target, data[:,2])
+plt.title("Vote Number")
+plt.xlabel("Page Number")
+plt.ylabel("Number of Votes")
+plt.savefig("Vote_Number.png")
+plt.clf()
 
 
-X=[
-	[7.34,6,200],
-	[7.5,6.5,300],
-	[6,6.4, 1000],
-	[6.63, 6.63, 600],
-	]
+data_training, data_test, target_training, target_test= train_test_split(data, target, test_size=.25, random_state=0)
+linear_machine= linear_model.LinearRegression()
+linear_machine.fit(data_training,target_training)
+prediction= linear_machine.predict(data_test)
+plt.scatter(target_test, prediction)
+plt.title("Linear Prediction")
+plt.xlabel('Target Test')
+plt.ylabel('Prediction')
+plt.savefig("scatter_linear_prediction.png")
+print(metrics.r2_score(target_test, prediction))
 
-results=knn.predict(X)
-print(results)
+Knn_Regression_Machine= KNeighborsRegressor(n_neighbors=1)
+Knn_Regression_Machine.fit(data_training,target_training)
+prediction1= Knn_Regression_Machine.predict(data_test)
+plt.scatter(target_test, prediction1)
+plt.title("KNN Prediction")
+plt.xlabel('Target Test')
+plt.ylabel('Prediction')
+plt.savefig("scatter_knn_regression_prediction.png")
+plt.clf()
+print(metrics.r2_score(target_test, prediction1))
+

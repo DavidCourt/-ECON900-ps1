@@ -7,7 +7,7 @@ if not os.path.exists("html_files"):
 	os.mkdir("html_files")
 unverified_context= ssl._create_unverified_context()
 
-for i in range(1061):
+for i in range(100):
 	print("page " + str(i+1))
 	f= open("html_files/boardgamegeekpage" + str(i+1) + ".html", "wb")
 	response=urllib.request.urlopen('https://boardgamegeek.com/browse/boardgame/page/' + str(i+1))

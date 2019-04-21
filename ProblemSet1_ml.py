@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
@@ -14,6 +15,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
+
+if not os.path.exists("scatter_plots"):
+	os.mkdir("scatter_plots")
 
 boardgame= pd.read_csv("parsed_results/boardgamegeek_dataset.csv", encoding= "latin-1")
 print(boardgame.info())
@@ -39,21 +43,21 @@ plt.scatter(data.values[:,0], target)
 plt.title("Geek Rating")
 plt.xlabel("Page Number")
 plt.ylabel("Geek Ranking")
-plt.savefig("Geek_Rank.png")
+plt.savefig("scatter_plots/Geek_Rank.png")
 plt.clf()
 
 plt.scatter(data.values[:,1], target)
 plt.title("Average Rating")
 plt.xlabel("Page Number")
 plt.ylabel("Average Rating")
-plt.savefig("Avg_Rating.png")
+plt.savefig("scatter_plots/Avg_Rating.png")
 plt.clf()
 
 plt.scatter(data.values[:,2], target)
 plt.title("Vote Number")
 plt.xlabel("Page Number")
 plt.ylabel("Number of Votes")
-plt.savefig("Vote_Number.png")
+plt.savefig("scatter_plots/Vote_Number.png")
 plt.clf()
 
 data1_training, data1_test, target_training, target_test= train_test_split(data1, target, test_size=.2, random_state=0)
@@ -64,16 +68,16 @@ plt.scatter(target_test, prediction)
 plt.title("Linear Prediction")
 plt.xlabel('Target Test')
 plt.ylabel('Prediction')
-plt.savefig("scatter_linear_prediction.png")
+plt.savefig("scatter_plots/scatter_linear_prediction.png")
 plt.clf()
 linear_r2=metrics.r2_score(target_test, prediction)
 print("Linear R^2: " + str(linear_r2))
 #Dont use because errors are systematic
 
-knn= KNeighborsClassifier()
-param_grid= {'n_neighbors' : np.arange(1,100)}
-knn_gscv = GridSearchCV(knn2, param_grid, cv=10).fit(data, target)
-print(knn_gscv.best_params_)
+# knn= KNeighborsClassifier()
+# param_grid= {'n_neighbors' : np.arange(1,100)}
+# knn_gscv = GridSearchCV(knn, param_grid, cv=10).fit(data, target)
+# print(knn_gscv.best_params_)
 
 data_training, data_test, target_training, target_test= train_test_split(data, target, test_size=.2, random_state=1)
 Knn_Regression_Machine= KNeighborsRegressor(n_neighbors=1)
@@ -83,7 +87,7 @@ plt.scatter(target_test, prediction1)
 plt.title("KNN Prediction")
 plt.xlabel('Target Test')
 plt.ylabel('Prediction')
-plt.savefig("scatter_knn_regression_prediction.png")
+plt.savefig("scatter_plots/scatter_knn_regression_prediction.png")
 plt.clf()
 KNN_R2=metrics.r2_score(target_test, prediction1)
 print("KNN R^2: "+ str(KNN_R2))
@@ -95,7 +99,7 @@ plt.scatter(target_test, prediction1)
 plt.title("Random Forest Prediction")
 plt.xlabel('Target Test')
 plt.ylabel('Prediction')
-plt.savefig("scatter_random_forest_regression_prediction.png")
+plt.savefig("scatter_plots/scatter_random_forest_regression_prediction.png")
 plt.clf()
 Random_Forest_R2= metrics.r2_score(target_test, prediction2)
 print("Random Forest R^2: "+ str(Random_Forest_R2))
@@ -108,7 +112,7 @@ plt.scatter(target_test, prediction1)
 plt.title("Random Forest Classifier Prediction")
 plt.xlabel('Target Test')
 plt.ylabel('Prediction')
-plt.savefig("scatter_random_forest_classifier_prediction.png")
+plt.savefig("scatter_plots/scatter_random_forest_classifier_prediction.png")
 plt.clf()
 Random_Forest_accuracy=accuracy_score(target_test, prediction3)
 print("Random Forest Accuracy Score: "+ str(Random_Forest_accuracy))
